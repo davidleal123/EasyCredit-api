@@ -1,24 +1,20 @@
 var dbconn = require('../config/dbconnection');
-const connection = dbconn.connection;
+const connect = dbconn;
 
 
 
 
 function getPrueba(req, res) {
-    connection.connect((err) => {
-        if (err) {
-            throw err;
+    const con = connect.connection;
+    if(con){
+      con.query('SELECT * FROM Empleados', (err,rows) => {
+        if(err){
+            res.status(500).send({mensaje: err});
+        } else {
+            res.status(200).send({response: rows});
         }
-    
-        console.log('Connected!');
-        res.status(200).send({mensaje: "conectado"});
       });
-      connection.end((err) => {
-        // The connection is terminated gracefully
-        // Ensures all previously enqueued queries are still
-        // before sending a COM_QUIT packet to the MySQL server.
-      });
-      
+    }
 }
 module.exports= {
     getPrueba
