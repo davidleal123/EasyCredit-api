@@ -14,9 +14,13 @@ function crearUsuario(req, res) {
         if(err){
             res.status(500).send({mensaje: err});
         } else {
-            resp = rows;
-            console.log(rows);
-
+            resp = rows[0];
+            console.log(resp);
+            console.log(resp.length);
+            if(resp.length > 0){
+                res.status(500).send({mensaje:"Este usuario ha sido creado antes, intente de nuevo con un usuario diferente"});
+                return;
+            }
         }
       });
     }
