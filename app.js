@@ -4,13 +4,19 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors')
+const process = require('process');
+const Knex = require('knex');
+const crypto = require('crypto');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var conrouter = require('./routes/connection');
+const usuarioRouter = require('./routes/usuarioRoute');
+const solicitudRouter = require('./routes/solicitudRoute');
 
 var app = express();
 app.use(cors())
+app.enable('trust proxy');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -24,7 +30,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api',conrouter)
+app.use('/api',conrouter);
+app.use('/api',usuarioRouter);
+app.use('/api',solicitudRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
